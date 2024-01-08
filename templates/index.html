@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <title>Results Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em 0;
+        }
+        .container {
+            width: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        .graph {
+            width: calc(45% - 10px); /* Adjust the 10px if more space is needed */
+            background-color: #fff;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            vertical-align: top;
+            margin-right: 10px; /* Space between the graph containers */
+            margin-left: 10px; 
+        }
+        /* Clearfix for .container in case of using float */
+        .container::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        /* Responsive adjustment */
+        @media screen and (max-width: 768px) {
+            .graph {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="header">
+        <h1>Results Viewer</h1>
+    </div>
+    <div class="container">
+
+        
+        <!-- Graph 1 Selection -->
+        <div class="graph">
+            <select id="folderSelect1">
+                <option value="" disabled selected>Select Folder for Graph 1</option>
+                {% for folder in folder_options %}
+                <option value="{{ folder }}">{{ folder }}</option>
+                {% endfor %}
+            </select>
+            <select id="gammaSelect1">
+                <option value="" disabled selected>Select Gamma for Graph 1</option>
+                {% for gamma in gamma_options %}
+                <option value="{{ loop.index }}">{{ gamma }}</option>
+                {% endfor %}
+            </select>
+            <select id="offsetSelect1">
+                <option value="" disabled selected>Select Offset for Graph 1</option>
+                {% for offset in offset_options %}
+                <option value="{{ loop.index }}">({{ offset[0] }}, {{ offset[1] }})</option>
+                {% endfor %}
+            </select>
+            <select id="executionSelect1">
+                <option value="" disabled selected>Select Execution for Graph 1</option>
+                {% for execution in execution_options %}
+                <option value="{{ execution }}">Execution {{ execution }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Load Data Button for Graph 1 -->
+            <button id="loadDataButton1">Load Data for Graph 1</button>
+            
+            <div id="graph1" style="height: 400px;">
+                <!-- Graph 1 will go here -->
+            </div>
+        </div>
+
+        <!-- Graph 2 Selection -->
+        <div class="graph">
+            <select id="folderSelect2">
+                <option value="" disabled selected>Select Folder for Graph 2</option>
+                {% for folder in folder_options %}
+                <option value="{{ folder }}">{{ folder }}</option>
+                {% endfor %}
+            </select>
+            <select id="gammaSelect2">
+                <option value="" disabled selected>Select Gamma for Graph 1</option>
+                {% for gamma in gamma_options %}
+                <option value="{{ loop.index }}">{{ gamma }}</option>
+                {% endfor %}
+            </select>
+            <select id="offsetSelect2">
+                <option value="" disabled selected>Select Offset for Graph 1</option>
+                {% for offset in offset_options %}
+                <option value="{{ loop.index }}">({{ offset[0] }}, {{ offset[1] }})</option>
+                {% endfor %}
+            </select>
+            <select id="executionSelect2">
+                <option value="" disabled selected>Select Execution for Graph 1</option>
+                {% for execution in execution_options %}
+                <option value="{{ execution }}">Execution {{ execution }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Load Data Button for Graph 2 -->
+            <button id="loadDataButton2">Load Data for Graph 2</button>
+
+            <div id="graph2" style="height: 400px;">
+                 <!-- Graph 2 will go here -->
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Event listener for the first "Load Data" button
+            var loadDataButton1 = document.getElementById('loadDataButton1');
+            if (loadDataButton1) {
+                loadDataButton1.addEventListener('click', function() {
+                    var gamma1 = document.getElementById('gammaSelect1').value;
+                    var offset1 = document.getElementById('offsetSelect1').value;
+                    var execution1 = document.getElementById('executionSelect1').value;
+                    var folder1 = document.getElementById('folderSelect1').value;
+
+                    // Sending an AJAX request for the first set of selections
+                    fetch(`/data/${folder1}/${gamma1}/${offset1}/${execution1}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Data received for Graph 1:', data);
+                            var trace1 = {
+                                x: data.map(point => point[0]),
+                                y: data.map(point => point[1]),
+                                mode: 'markers',
+                                type: 'scatter'
+                            };
+                            var layout = {
+                                title: 'Graph 1',
+                                xaxis: { title: 'X Axis' },
+                                yaxis: { title: 'Y Axis' }
+                            };
+                            Plotly.newPlot('graph1', [trace1], layout);
+                        })
+                        .catch(error => console.error('Error with Graph 1:', error));
+                });
+            }
+    
+            // Event listener for the second "Load Data" button
+            var loadDataButton2 = document.getElementById('loadDataButton2');
+            
+            if (loadDataButton2) {
+                loadDataButton2.addEventListener('click', function() {
+                    var gamma2 = document.getElementById('gammaSelect2').value;
+                    var offset2 = document.getElementById('offsetSelect2').value;
+                    var execution2 = document.getElementById('executionSelect2').value;
+                    var folder2 = document.getElementById('folderSelect1').value;
+
+                    // Sending an AJAX request for the second set of selections
+                    fetch(`/data/${folder2}/${gamma2}/${offset2}/${execution2}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Data received for Graph 2:', data);
+                            var trace2 = {
+                                x: data.map(point => point[0]),
+                                y: data.map(point => point[1]),
+                                mode: 'markers',
+                                type: 'scatter'
+                            };
+                            var layout = {
+                                title: 'Graph 2',
+                                xaxis: { title: 'X Axis' },
+                                yaxis: { title: 'Y Axis' }
+                            };
+                            Plotly.newPlot('graph2', [trace2], layout);
+                        })
+                        .catch(error => console.error('Error with Graph 2:', error));
+                });
+            }
+        });
+    </script>    
+    
+
+</body>
+</html>
