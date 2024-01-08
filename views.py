@@ -6,9 +6,9 @@ views = Blueprint('views', __name__)
 
 @views.route('/')
 def home():
-    folder_options = ['LAME', 'SCHAFFER']
+    folder_options = ['LAME']# , 'SCHAFFER']
     gamma_options = [0.25, 0.50, 0.75, 1.0, 2.0, 5.0]
-    offset_options = [(0, 0), (0, 1), (0.25, 0.75), (0.5, 0.5), (0.75, 0.25), (1, 0), (1, 1), (0.1, 0.1)]
+    offset_options = ['NA',(0, 0), (0, 1), (0.25, 0.75), (0.5, 0.5), (0.75, 0.25), (1, 0), (1, 1), (0.1, 0.1)]
     execution_options = list(range(1, 31))  # Assuming 30 executions
 
     return render_template('index.html', folder_options=folder_options,

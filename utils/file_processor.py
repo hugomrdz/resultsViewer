@@ -12,6 +12,7 @@ gamma_mapping = {
 
 # Mapping for offset values
 offset_mapping = {
+    0: (-1,-1),
     1: (0, 0),
     2: (0, 1),
     3: (0.25, 0.75),
