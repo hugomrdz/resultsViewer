@@ -12,7 +12,7 @@ gamma_mapping = {
 
 # Mapping for offset values
 offset_mapping = {
-    0: (-1,-1),
+    0: None, # NO OFFSET
     1: (0, 0),
     2: (0, 1),
     3: (0.25, 0.75),
@@ -23,31 +23,42 @@ offset_mapping = {
     8: (0.1, 0.1)
 }
 
-def construct_file_path(folder_name, gamma, offset, execution):
+def construct_file_path(folder_name, nvar, nobj, gamma, offset, execution):
     """
-    Constructs the file path based on gamma, offset, and execution number.
+    Constructs the file path based on the folder name, number of variables, number of objectives,
+    gamma, offset, and execution number.
 
-    :param gamma: The gamma value (1-6)
-    :param offset: The offset value (1-8)
+    :param folder_name: Name of the test problem folder
+    :param nvar: Number of variables
+    :param nobj: Number of objectives
+    :param gamma: The gamma index (1-6)
+    :param offset: The offset index (0-8)
     :param execution: The execution number (1-30)
     :return: The constructed file path
     """
-
-    gamma_value = "{:.2f}".format(gamma_mapping.get(gamma, 0))
-    offset_value = offset_mapping.get(offset, None)
+    # Map gamma index to actual gamma value
+    gamma_value = "{:.2f}".format(gamma_mapping[gamma])
     execution_str = f"R{execution:02d}"
-    
-    if offset_value is not None:
-        file_name = f"HV-EMOA_{folder_name}_{gamma_value}_02D_{execution_str}.pof"
-        file_path = f"data/{folder_name}/outputOffset{offset}_gamma{gamma}/{file_name}"
-        return file_path
-    else:
-        return None
+
+    # Determine offset folder part based on offset index
+    if offset == 0:  # No offset
+        offset_folder_part = f"reference_gamma{gamma}/"
+    else:  # With offset
+        offset_tuple = offset_mapping[offset]
+        offset_folder_part = f"offset{offset}_gamma{gamma}/"
+
+    # Construct file name
+    file_name = f"HV-EMOA_{folder_name}_{gamma_value}_0{nobj}D_{execution_str}.pof"
+    # Construct full file path
+    file_path = f"data/{folder_name}/nvar{nvar}/nobj{nobj}/{offset_folder_part}{file_name}"
+
+    return file_path
 
 
 def read_pof_file(file_path):
     """
     Reads a .pof file and extracts the data points.
+    It can handle both 2D and 3D points.
 
     :param file_path: Path to the .pof file
     :return: List of tuples representing the data points
@@ -56,9 +67,14 @@ def read_pof_file(file_path):
     with open(file_path, 'r') as file:
         next(file)  # Skip the first line (header)
         for line in file:
-            if line.strip():  # Ensuring the line is not empty
-                # Splitting the line into two values and converting them to float
-                x, y = map(float, line.split())
-                data_points.append((x, y))
-
+            # Splitting the line into values and converting them to float
+            values = list(map(float, line.split()))
+            # Depending on the number of values, append the point as a tuple
+            if len(values) == 2:
+                data_points.append((values[0], values[1]))  # 2D point
+            elif len(values) == 3:
+                data_points.append((values[0], values[1], values[2]))  # 3D point
+            else:
+                # Handle the case where there are not 2 or 3 values
+                print(f"Unexpected number of values in line: {line}")
     return data_points
