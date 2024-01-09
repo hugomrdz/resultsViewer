@@ -8,7 +8,7 @@ views = Blueprint('views', __name__)
 @views.route('/')
 def home():
     folder_options = ['LAME']  # Add more options as needed
-    nvar_options = [5]  # nvarX options
+    nvar_options = [0, 2, 5]  # nvarX options
     nobj_options = [2, 3]  # nobjY options
     gamma_options = [0.25, 0.50, 0.75, 1.0, 2.0, 5.0]
     offset_options = [
