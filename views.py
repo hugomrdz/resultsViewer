@@ -38,11 +38,10 @@ def home():
                        gamma_options=gamma_options,
                        execution_options=execution_options)
 
-
-@views.route('/data/<folder>/<int:nvar>/<int:nobj>/<int:vector>/<int:alpha>/<int:gamma>/<int:execution>')
-def get_data(folder, nvar, nobj, vector, alpha, gamma, execution):
+@views.route('/data/<folder>/<int:nvar>/<int:nobj>/<int:gamma>/<int:vector>/<int:alpha>/<int:execution>')
+def get_data(folder, nvar, nobj, gamma, vector, alpha, execution):
     # Adjust construct_file_path call to include alpha and use the new vector naming
-    file_path = construct_file_path(folder, nvar, nobj, vector, alpha, gamma, execution)
+    file_path = construct_file_path(folder, nvar, nobj, gamma, vector, alpha, execution)
     if os.path.exists(file_path):
         data_points = read_pof_file(file_path)
         return jsonify(data_points)
