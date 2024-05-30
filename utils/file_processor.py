@@ -44,16 +44,21 @@ def construct_file_path(folder_name, nvar, nobj, vector, alpha, gamma, execution
     :return: The constructed file path
     """
   
-    vector_folder_part = vector_mapping[vector]
-    alpha_str = f"alpha{alpha}" if alpha > 0 else ""
     gamma_value = "{:.2f}".format(gamma_mapping[gamma])
+
+    vector_folder_part = vector_mapping[vector]
+    alpha_str = f"_alpha{alpha}" if alpha > 0 else ""
+    gamma_str = f"_gamma{gamma}"  # Use a simple append to match the example path
+
     execution_str = f"R{execution:02d}"
 
     # Construct file name using the original naming convention
     file_name = f"HV-EMOA_{folder_name}_{gamma_value}_0{nobj}D_{execution_str}.pof"
 
-    # Construct new directory structure to include vector and alpha
-    file_path = f"data/{folder_name}/nvar{nvar}/nobj{nobj}/{vector_folder_part}_{alpha_str}_gamma{gamma}/{file_name}"
+    # Construct new directory structure to include vector, alpha, and gamma
+    directory = f"{vector_folder_part}{alpha_str}{gamma_str}"
+    file_path = f"data/{folder_name}/nvar{nvar}/nobj{nobj}/{directory}/{file_name}"
+
 
     return file_path
 
