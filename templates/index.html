@@ -253,10 +253,11 @@
                 var nvar = document.getElementById('nvarSelect' + graphId).value;
                 var nobj = document.getElementById('nobjSelect' + graphId).value;
                 var gamma = document.getElementById('gammaSelect' + graphId).value;
-                var offset = document.getElementById('offsetSelect' + graphId).value;
+                var vector = document.getElementById('vectorSelect' + graphId).value;
+                var alpha = document.getElementById('alphaSelect' + graphId).value;
                 var execution = document.getElementById('executionSelect' + graphId).value;
     
-                var dataUrl = `/data/${folder}/${nvar}/${nobj}/${gamma}/${offset}/${execution}`;
+                var dataUrl = `/data/${folder}/${nvar}/${nobj}/${gamma}/${vector}/${alpha}/${execution}`;
     
                 fetch(dataUrl)
                     .then(response => response.json())
