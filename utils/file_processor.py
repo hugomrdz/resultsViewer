@@ -45,7 +45,7 @@ def construct_file_path(folder_name, nvar, nobj, vector, alpha, gamma, execution
     file_name = f"HV-EMOA_{folder_name}_{gamma_value}_0{nobj}D_{execution_str}.pof"
 
     # Construct new directory structure to include vector and alpha
-    file_path = f"data/{folder_name}/nvar{nvar}/nobj{nobj}/{vector_str}{alpha_str}_{gamma_value}/{file_name}"
+    file_path = f"data/{folder_name}/nvar{nvar}/nobj{nobj}/{vector_str}_{alpha_str}_{gamma_value}/{file_name}"
 
     return file_path
 
@@ -72,3 +72,5 @@ def read_pof_file(file_path):
                 # Handle the case where there are not 2 or 3 values
                 print(f"Unexpected number of values in line: {line}")
     return data_points
+
+# comment
