@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <title>Results Viewer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333; /* Modern text color */
+        }
+        .header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em 0;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around; /* Evenly space around the graph containers */
+            gap: 20px;
+            padding: 20px 0; /* More vertical padding */
+        }
+        .graph {
+            float: left; /* Add this line */
+            width: 42%;
+            flex-basis: 44%; /* Each graph container takes up to 48% of the container width */
+            background-color: #fff;
+            padding: 30px; /* More padding for a spacious look */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            border-radius: 8px; /* Rounded corners */
+        }
+        select {
+            width: 40%; /* Reducing the width of dropdowns */
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #f8f8f8; /* Light background for the dropdowns */
+        }
+        .load-data-button {
+            width: 20%; /* Align the button width with the dropdowns */
+            padding: 10px 20px;
+            margin-top: 10px; /* Space above the button */
+            border: none;
+            border-radius: 4px;
+            background-color: #5cb85c; /* Bootstrap 'success' green */
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .load-data-button:hover {
+            background-color: #4cae4c; /* Slightly darker green on hover */
+        }
+        @media screen and (max-width: 768px) {
+            .container {
+                flex-direction: column; /* Stack graph containers on smaller screens */
+            }
+            .graph {
+                flex-basis: 100%;
+            }
+            select, .load-data-button {
+                width: 100%; /* Full width on smaller screens */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Results Viewer</h1>
+    </div>
+    <div class="container">
+
+        <!-- Graph 1 Selection -->
+        <div class="graph">
+            <!-- Folder Selection -->
+            <select id="folderSelect1">
+                <option value="" disabled selected>Select Folder for Graph 1</option>
+                {% for folder in folder_options %}
+                <option value="{{ folder }}">{{ folder }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- nvarX Selection -->
+            <select id="nvarSelect1">
+                <option value="" disabled selected>Select nvar for Graph 1</option>
+                {% for nvar in nvar_options %}
+                <option value="{{ nvar }}">nvar {{ nvar }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- nobjY Selection -->
+            <select id="nobjSelect1">
+                <option value="" disabled selected>Select nobj for Graph 1</option>
+                {% for nobj in nobj_options %}
+                <option value="{{ nobj }}">nobj {{ nobj }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Gamma Selection -->
+            <select id="gammaSelect1">
+                <option value="" disabled selected>Select Gamma for Graph 1</option>
+                {% for gamma in gamma_options %}
+                <option value="{{ loop.index }}">{{ gamma }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Vector Selection -->
+            <select id="vectorSelect1">
+                <option value="" disabled selected>Select Vector for Graph 2</option>
+                {% for vector in vector_options %}
+                <option value="{{ vector }}">{{ vector }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Alpha Selection -->
+            <select id="alphaSelect1">
+                <option value="" disabled selected>Select Alpha for Graph 2</option>
+                {% for alpha in alpha_options %}
+                <option value="{{ alpha }}">Alpha {{ alpha }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Execution Selection -->
+            <select id="executionSelect1">
+                <option value="" disabled selected>Select Execution for Graph 1</option>
+                {% for execution in execution_options %}
+                <option value="{{ execution }}">Execution {{ execution }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Load Data Button for Graph 1 -->
+            <button id="loadDataButton1" class="load-data-button">Load Data for Graph 1</button>
+            
+            <!-- Container for Graph 1 -->
+            <div id="graph1" style="height: 400px;">
+                <!-- Graph 1 will go here -->
+            </div>
+        </div>
+
+        <!-- Graph 2 Selection -->
+        <div class="graph">
+            <!-- Folder Selection -->
+            <select id="folderSelect2">
+                <option value="" disabled selected>Select Folder for Graph 2</option>
+                {% for folder in folder_options %}
+                <option value="{{ folder }}">{{ folder }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- nvarX Selection -->
+            <select id="nvarSelect2">
+                <option value="" disabled selected>Select nvar for Graph 2</option>
+                {% for nvar in nvar_options %}
+                <option value="{{ nvar }}">nvar {{ nvar }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- nobjY Selection -->
+            <select id="nobjSelect2">
+                <option value="" disabled selected>Select nobj for Graph 2</option>
+                {% for nobj in nobj_options %}
+                <option value="{{ nobj }}">nobj {{ nobj }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Gamma Selection -->
+            <select id="gammaSelect2">
+                <option value="" disabled selected>Select Gamma for Graph 2</option>
+                {% for gamma in gamma_options %}
+                <option value="{{ loop.index }}">{{ gamma }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Vector Selection -->
+            <select id="vectorSelect2">
+                <option value="" disabled selected>Select Vector for Graph 2</option>
+                {% for vector in vector_options %}
+                <option value="{{ vector }}">{{ vector }}</option>
+                {% endfor %}
+            </select>
+
+
+            <!-- Alpha Selection -->
+            <select id="alphaSelect2">
+                <option value="" disabled selected>Select Alpha for Graph 2</option>
+                {% for alpha in alpha_options %}
+                <option value="{{ alpha }}">Alpha {{ alpha }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Execution Selection -->
+            <select id="executionSelect2">
+                <option value="" disabled selected>Select Execution for Graph 2</option>
+                {% for execution in execution_options %}
+                <option value="{{ execution }}">Execution {{ execution }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Load Data Button for Graph 2 -->
+            <button id="loadDataButton2" class="load-data-button">Load Data for Graph 2</button>
+
+            <div id="graph2" style="height: 400px;">
+                 <!-- Graph 2 will go here -->
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function plotGraph(graphId, data, nobj) {
+                var layout = {
+                    title: 'Graph ' + graphId,
+                    autosize: true,
+                    margin: { l: 50, r: 50, b: 50, t: 50 },
+                };
+    
+                if (nobj == 2) {
+                    // Plotting 2D Scatter plot
+                    var trace = {
+                        x: data.map(point => point[0]),
+                        y: data.map(point => point[1]),
+                        mode: 'markers',
+                        type: 'scatter'
+                    };
+                    Plotly.newPlot('graph' + graphId, [trace], layout);
+                } else if (nobj == 3) {
+                    // Plotting 3D Scatter plot
+                    var trace = {
+                        x: data.map(point => point[0]),
+                        y: data.map(point => point[1]),
+                        z: data.map(point => point[2]),
+                        mode: 'markers',
+                        type: 'scatter3d',
+                        marker: {
+                            size: 2, // Adjust marker size
+                            opacity: 0.6 // Adjust opacity
+                        }
+                    };
+                    Plotly.newPlot('graph' + graphId, [trace], layout);
+                }
+            }
+    
+            // Common function to handle the fetch request and plotting
+            function loadData(graphId) {
+                var folder = document.getElementById('folderSelect' + graphId).value;
+                var nvar = document.getElementById('nvarSelect' + graphId).value;
+                var nobj = document.getElementById('nobjSelect' + graphId).value;
+                var gamma = document.getElementById('gammaSelect' + graphId).value;
+                var offset = document.getElementById('offsetSelect' + graphId).value;
+                var execution = document.getElementById('executionSelect' + graphId).value;
+    
+                var dataUrl = `/data/${folder}/${nvar}/${nobj}/${gamma}/${offset}/${execution}`;
+    
+                fetch(dataUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Data received for Graph ' + graphId + ':', data);
+                        plotGraph(graphId, data, nobj);
+                    })
+                    .catch(error => console.error('Error with Graph ' + graphId + ':', error));
+            }
+    
+            // Event listener for the first "Load Data" button
+            var loadDataButton1 = document.getElementById('loadDataButton1');
+            if (loadDataButton1) {
+                loadDataButton1.addEventListener('click', function() { loadData(1); });
+            }
+    
+            // Event listener for the second "Load Data" button
+            var loadDataButton2 = document.getElementById('loadDataButton2');
+            if (loadDataButton2) {
+                loadDataButton2.addEventListener('click', function() { loadData(2); });
+            }
+        });
+    </script> 
+
+</body>
+</html>
