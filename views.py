@@ -21,13 +21,7 @@ def home():
         (7, 'Reference 2 (1.1,1.1)'),
         (8, 'Reference 3 (2,2)')
     ]
-    alpha_options = [
-        (0, 'Fixed Point'),
-        (1, 'Alpha 0.25'),
-        (2, 'Alpha 0.50'),
-        (3, 'Alpha 0.75')
-    ]  # Assuming alphas are integers
-
+    alpha_options = [0.25, 0.50, 0.75]  # Alpha options
     execution_options = list(range(1, 31))  # Assuming 30 executions
 
     return render_template('index.html', folder_options=folder_options,
@@ -42,10 +36,11 @@ def home():
 def get_data(folder, nvar, nobj, gamma, vector, alpha, execution):
     # Adjust construct_file_path call to include alpha and use the new vector naming
     file_path = construct_file_path(folder, nvar, nobj, gamma, vector, alpha, execution)
-    if os.path.exists(file_path):
+    if file_path and os.path.exists(file_path):
         data_points = read_pof_file(file_path)
         return jsonify(data_points)
     else:
+        # If the file_path is None or file does not exist, return an error
         return jsonify({"error": "Invalid parameters or file not found"}), 404
 
 # comment

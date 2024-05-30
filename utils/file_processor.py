@@ -10,6 +10,13 @@ gamma_mapping = {
     6: 5.00
 }
 
+alpha_mapping = {
+    0: None, # NO ALPHA
+    1: 0.25,
+    2: 0.50,
+    3: 0.75,
+}
+
 # New mapping for vector and alpha values
 vector_mapping = {
     1: "vector1",
@@ -36,8 +43,9 @@ def construct_file_path(folder_name, nvar, nobj, vector, alpha, gamma, execution
     :param execution: The execution number (1-30)
     :return: The constructed file path
     """
-    vector_str = vector_mapping[vector]
-    alpha_str = f"_alpha{alpha}" if alpha > 0 else ""
+  
+    vector_folder_part = vector_mapping[vector]
+    alpha_str = f"alpha{alpha}" if alpha > 0 else ""
     gamma_value = "{:.2f}".format(gamma_mapping[gamma])
     execution_str = f"R{execution:02d}"
 
@@ -45,7 +53,7 @@ def construct_file_path(folder_name, nvar, nobj, vector, alpha, gamma, execution
     file_name = f"HV-EMOA_{folder_name}_{gamma_value}_0{nobj}D_{execution_str}.pof"
 
     # Construct new directory structure to include vector and alpha
-    file_path = f"data/{folder_name}/nvar{nvar}/nobj{nobj}/{vector_str}_{alpha_str}_{gamma_value}/{file_name}"
+    file_path = f"data/{folder_name}/nvar{nvar}/nobj{nobj}/{vector_folder_part}_{alpha_str}_gamma{gamma}/{file_name}"
 
     return file_path
 
@@ -72,5 +80,3 @@ def read_pof_file(file_path):
                 # Handle the case where there are not 2 or 3 values
                 print(f"Unexpected number of values in line: {line}")
     return data_points
-
-# comment

@@ -110,27 +110,11 @@
                 {% endfor %}
             </select>
 
-            <!-- Vector Selection -->
-            <select id="vectorSelect1">
-                <option value="" disabled selected>Select Vector for Graph 2</option>
-                {% for vector_value, vector_string in vector_options %}
-                <option value="{{ vector_value }}">{{ vector_string }}</option>
-                {% endfor %}
-            </select>
-
             <!-- Offset Selection -->
-            <!--select id="offsetSelect2">
-                <option value="" disabled selected>Select Offset for Graph 2</option>
+            <select id="offsetSelect1">
+                <option value="" disabled selected>Select Offset for Graph 1</option>
                 {% for offset_value, offset_string in offset_options %}
                 <option value="{{ offset_value }}">{{ offset_string }}</option>
-                {% endfor %}
-            </select>-->
-
-            <!-- Alpha Selection -->
-            <select id="alphaSelect1">
-                <option value="" disabled selected>Select Alpha for Graph 2</option>
-                {% for alpha in alpha_options %}
-                <option value="{{ loop.index }}">{{ alpha }}</option>
                 {% endfor %}
             </select>
 
@@ -185,20 +169,11 @@
                 {% endfor %}
             </select>
 
-            <!-- Vector Selection -->
-            <select id="vectorSelect2">
-                <option value="" disabled selected>Select Vector for Graph 2</option>
-                {% for vector_value, vector_string in vector_options %}
-                <option value="{{ vector_value }}">{{ vector_string }}</option>
-                {% endfor %}
-            </select>
-
-
-            <!-- Alpha Selection -->
-            <select id="alphaSelect2">
-                <option value="" disabled selected>Select Alpha for Graph 2</option>
-                {% for alpha in alpha_options %}
-                <option value="{{ loop.index }}">{{ alpha }}</option>
+            <!-- Offset Selection -->
+            <select id="offsetSelect2">
+                <option value="" disabled selected>Select Offset for Graph 2</option>
+                {% for offset_value, offset_string in offset_options %}
+                <option value="{{ offset_value }}">{{ offset_string }}</option>
                 {% endfor %}
             </select>
 
@@ -261,11 +236,10 @@
                 var nvar = document.getElementById('nvarSelect' + graphId).value;
                 var nobj = document.getElementById('nobjSelect' + graphId).value;
                 var gamma = document.getElementById('gammaSelect' + graphId).value;
-                var vector = document.getElementById('vectorSelect' + graphId).value;
-                var alpha = document.getElementById('alphaSelect' + graphId).value;
+                var offset = document.getElementById('offsetSelect' + graphId).value;
                 var execution = document.getElementById('executionSelect' + graphId).value;
     
-                var dataUrl = `/data/${folder}/${nvar}/${nobj}/${gamma}/${vector}/${alpha}/${execution}`;
+                var dataUrl = `/data/${folder}/${nvar}/${nobj}/${gamma}/${offset}/${execution}`;
     
                 fetch(dataUrl)
                     .then(response => response.json())
@@ -291,4 +265,4 @@
     </script> 
 
 </body>
-</html>
+</html> 
